@@ -38,6 +38,7 @@ void drawboard(Board* board) {
 			printw("(%d) ", board->tiles[i][j].empty);
 		}
 		printw("\n");
+
 	}
 
 	while ((ch = getch()) != 27){

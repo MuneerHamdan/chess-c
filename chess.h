@@ -5,7 +5,7 @@
 #define RANKS 8
 #define FILES 8
 
-#define BLACK '\ '
+#define BLACK ' '
 #define WHITE '#'
 
 

@@ -11,14 +11,13 @@ int main(int argc, char** argv){
 	drawboard(board);
 
 
-	Piece* piece = initpiece('w', 'p', 1, 2);
 
-	drawpiece(piece, board);
+//	drawpiece(piece, board);
 	
 
 
 	free(board);
-	free(piece);
+//	free(piece);
 
 	return 0;
 }

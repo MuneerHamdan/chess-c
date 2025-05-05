@@ -5,16 +5,19 @@
 #define RANKS 8
 #define FILES 8
 
+#define BLACK '\ '
+#define WHITE '#'
+
 
 typedef struct {
-	char type;
 	char color;
+	char type;
 	int pos[2];
 
 } Piece;
 
 typedef struct {
-	int empty;
+	char empty;
 	int pos[2];
 	Piece* piece;
 } Tile;
@@ -24,11 +27,11 @@ typedef struct {
 } Board;
 
 
-void initboard(Board* board);
+Board* initboard();
 void drawboard(Board* board);
 
 
-void initpiece(Piece* piece, char type, char color, int posx, int posy);
-void drawpiece();
+Piece* initpiece(char color, char type, int posx, int posy);
+void drawpiece(Piece* piece, Board* board);
 
 #endif

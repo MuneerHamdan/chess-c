@@ -1,13 +1,15 @@
-#include "test2.h"
+#include "chess.h"
 #include <stdio.h>
+#include <ncurses.h>
 
 
 
 //FUNCTION DEFINITIONS
 
+
 void initboard(Board* b) {
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
+	for (int i = 0; i < RANKS; i++) {
+		for (int j = 0; j < FILES; j++) {
 			b->tiles[i][j].pos[0] = i;
 			b->tiles[i][j].pos[1] = j;
 			b->tiles[i][j].empty = 0;
@@ -15,19 +17,36 @@ void initboard(Board* b) {
 		}
 	}
 
-	
+
 }
 
 
 void drawboard(Board* board) {
-	for (int i = 0; i < 8; i++){
-		for (int j = 0; j < 8; j++){
 
-//			printf("(%d, %d) ", board->tiles[i][j].pos[0], board->tiles[i][j].pos[1]);
-			printf("(%d) ", board->tiles[i][j].empty);
+	int ch;
+
+	initscr();
+	//	raw();
+	//	keypad(stdscr, TRUE);
+	noecho();
+
+	printw("welcome to chess");
+	clear();
+	for (int i = 0; i < RANKS; i++) {
+		for (int j = 0; j < FILES; j++) {
+
+			printw("(%d) ", board->tiles[i][j].empty);
 		}
-		printf("\n");
+		printw("\n");
 	}
+
+	while ((ch = getch()) != 27){
+		refresh();
+
+	}
+
+	refresh();
+	endwin();
 }
 
 

@@ -18,44 +18,44 @@ Board* initboard() {
 		}
 	}
 
-	Piece* wp0 = initpiece(board, 'w', 'p', 6, 0);
-	Piece* wp1 = initpiece(board, 'w', 'p', 6, 1);
-	Piece* wp2 = initpiece(board, 'w', 'p', 6, 2);
-	Piece* wp3 = initpiece(board, 'w', 'p', 6, 3);
-	Piece* wp4 = initpiece(board, 'w', 'p', 6, 4);
-	Piece* wp5 = initpiece(board, 'w', 'p', 6, 5);
-	Piece* wp6 = initpiece(board, 'w', 'p', 6, 6);
-	Piece* wp7 = initpiece(board, 'w', 'p', 6, 7);
-                                                    
-	Piece* bp0 = initpiece(board, 'b', 'p', 1, 0);
-	Piece* bp1 = initpiece(board, 'b', 'p', 1, 1);
-	Piece* bp2 = initpiece(board, 'b', 'p', 1, 2);
-	Piece* bp3 = initpiece(board, 'b', 'p', 1, 3);
-	Piece* bp4 = initpiece(board, 'b', 'p', 1, 4);
-	Piece* bp5 = initpiece(board, 'b', 'p', 1, 5);
-	Piece* bp6 = initpiece(board, 'b', 'p', 1, 6);
-	Piece* bp7 = initpiece(board, 'b', 'p', 1, 7);
+	Piece* wp0 = initpiece(board, 'w', 'P', 6, 0);
+	Piece* wp1 = initpiece(board, 'w', 'P', 6, 1);
+	Piece* wp2 = initpiece(board, 'w', 'P', 6, 2);
+	Piece* wp3 = initpiece(board, 'w', 'P', 6, 3);
+	Piece* wp4 = initpiece(board, 'w', 'P', 6, 4);
+	Piece* wp5 = initpiece(board, 'w', 'P', 6, 5);
+	Piece* wp6 = initpiece(board, 'w', 'P', 6, 6);
+	Piece* wp7 = initpiece(board, 'w', 'P', 6, 7);
+
+	Piece* bp0 = initpiece(board, 'b', 'P', 1, 0);
+	Piece* bp1 = initpiece(board, 'b', 'P', 1, 1);
+	Piece* bp2 = initpiece(board, 'b', 'P', 1, 2);
+	Piece* bp3 = initpiece(board, 'b', 'P', 1, 3);
+	Piece* bp4 = initpiece(board, 'b', 'P', 1, 4);
+	Piece* bp5 = initpiece(board, 'b', 'P', 1, 5);
+	Piece* bp6 = initpiece(board, 'b', 'P', 1, 6);
+	Piece* bp7 = initpiece(board, 'b', 'P', 1, 7);
 
 
-	Piece* wr1 = initpiece(board, 'w', 'r', 7, 0);
-	Piece* wr2 = initpiece(board, 'w', 'r', 7, 7);
+	Piece* wr1 = initpiece(board, 'w', 'R', 7, 0);
+	Piece* wr2 = initpiece(board, 'w', 'R', 7, 7);
 
-	Piece* br1 = initpiece(board, 'b', 'r', 0, 0);
-	Piece* br2 = initpiece(board, 'b', 'r', 0, 7);
-
-
-	Piece* wb1 = initpiece(board, 'w', 'b', 7, 1);
-	Piece* wb2 = initpiece(board, 'w', 'b', 7, 6);
-
-	Piece* bb1 = initpiece(board, 'b', 'b', 0, 1);
-	Piece* bb2 = initpiece(board, 'b', 'b', 0, 6);
+	Piece* br1 = initpiece(board, 'b', 'R', 0, 0);
+	Piece* br2 = initpiece(board, 'b', 'R', 0, 7);
 
 
-	Piece* wn1 = initpiece(board, 'w', 'n', 7, 2);
-	Piece* wn2 = initpiece(board, 'w', 'n', 7, 5);
+	Piece* wb1 = initpiece(board, 'w', 'B', 7, 1);
+	Piece* wb2 = initpiece(board, 'w', 'B', 7, 6);
 
-	Piece* bn1 = initpiece(board, 'b', 'n', 0, 2);
-	Piece* bn2 = initpiece(board, 'b', 'n', 0, 5);
+	Piece* bb1 = initpiece(board, 'b', 'B', 0, 1);
+	Piece* bb2 = initpiece(board, 'b', 'B', 0, 6);
+
+
+	Piece* wn1 = initpiece(board, 'w', 'N', 7, 2);
+	Piece* wn2 = initpiece(board, 'w', 'N', 7, 5);
+
+	Piece* bn1 = initpiece(board, 'b', 'N', 0, 2);
+	Piece* bn2 = initpiece(board, 'b', 'N', 0, 5);
 
 	Piece* wK = initpiece(board, 'w', 'K', 7, 3);
 	Piece* wQ = initpiece(board, 'w', 'Q', 7, 4);
@@ -127,18 +127,6 @@ void drawboard(Board* board) {
 
 
 		switch (ch) {
-			case KEY_UP:
-				y--;
-				break;
-			case KEY_DOWN:
-				y++;
-				break;
-			case KEY_LEFT:
-				x--;
-				break;
-			case KEY_RIGHT:
-				x++;
-				break;
 			case 106:
 				y++;
 				break;
@@ -153,8 +141,8 @@ void drawboard(Board* board) {
 				break;
 			case 10:
 				if ((selected[0] == -1 || selected[1] == -1) && (board->tiles[y][x / 3].piece != NULL)) {
-					selected[0] = x / 3;
-					selected[1] = y;
+					selected[0] = y;
+					selected[1] = x / 3;
 					highlightpiece(board, selected[0], selected[1]);
 				}
 				else {
@@ -165,15 +153,14 @@ void drawboard(Board* board) {
 					selected[1] = -1;
 
 				}
+				break;
 			default:
-				//				printw("character pressed is = %3d. will get printed as '%c'\n", ch, ch);
-				//				printw("y: %3d, x: %3d\n", x, y);
-				//				printw("targety: %d, x: %d", targeted[0], targeted[1]);
 				break;
 		}
 
-		printw("%d, %d\n", y, x);
+		printw("character pressed = %3d. prints as '%c'\n", ch, ch);
 		printw("boardy: %d, x: %d\n", y, x);
+//		printw("blinking: %d\n",board->tiles[y][x / 3].piece->select);
 		printw("selectedy: %d, x: %d\n", selected[0], selected[1]);
 		printw("targety: %d, x: %d\n", targeted[0], targeted[1]);
 		printw("piece ptr: %p\n", board->tiles[y][x / 3].piece);
@@ -192,15 +179,22 @@ void drawboard(Board* board) {
 
 
 void highlightpiece(Board* board, int selectedy, int selectedx){
-	if (board->tiles[selectedx][selectedy].piece != NULL)
-		board->tiles[selectedx][selectedy].piece->select = 1;
+	if (board->tiles[selectedy][selectedx].piece != NULL)
+		board->tiles[selectedy][selectedx].piece->select = 1;
 }
 
 void movepiece(Board* board, int selectedy, int selectedx, int targety, int targetx) {
 	if (board->tiles[targety][targetx].piece == NULL){
-		board->tiles[selectedy][selectedx].piece->posy = board->tiles[targety][targetx].piece->posy;
-		board->tiles[selectedy][selectedx].piece->posx = board->tiles[targety][targetx].piece->posx;
+//		board->tiles[selectedy][selectedx].piece->posy = board->tiles[targety][targetx].piece->posy;
+//		board->tiles[selectedy][selectedx].piece->posx = board->tiles[targety][targetx].piece->posx;
+
+
+		Piece* temp = board->tiles[selectedy][selectedx].piece;
+		board->tiles[selectedy][selectedx].piece = NULL;
+		board->tiles[targetx][targety].piece = temp;
+		printw("targety: %d, x: %d, temp: %p\n", targety, targetx, temp);
 	}
+//	board->tiles[selectedx][selectedy].piece->select = -1;
 }
 
 

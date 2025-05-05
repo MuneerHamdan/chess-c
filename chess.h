@@ -10,15 +10,18 @@
 
 
 typedef struct {
+	int select;
 	char color;
 	char type;
-	int pos[2];
+	int posy;
+	int posx;
 
 } Piece;
 
 typedef struct {
 	char empty;
-	int pos[2];
+	int posy;
+	int posx;
 	Piece* piece;
 } Tile;
 
@@ -31,6 +34,9 @@ Board* initboard();
 void drawboard(Board* board);
 
 Piece* initpiece(Board* board, char color, char type, int posx, int posy);
+
+void highlightpiece(Board* board, int selectedy, int selectedx);
+void movepiece(Board* board, int selectedy, int selectedx, int targety, int targetx);
 
 void freeboard(Board* board);
 

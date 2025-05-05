@@ -9,6 +9,7 @@ int main(int argc, char** argv){
 
 	drawboard(board);
 
+//	freeboard(board);
 
 	return 0;
 }

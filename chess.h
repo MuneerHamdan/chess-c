@@ -5,7 +5,7 @@
 #define RANKS 8
 #define FILES 8
 
-#define BLACK ' '
+#define BLACK '_'
 #define WHITE '#'
 
 
@@ -30,8 +30,8 @@ typedef struct {
 Board* initboard();
 void drawboard(Board* board);
 
+Piece* initpiece(Board* board, char color, char type, int posx, int posy);
 
-Piece* initpiece(char color, char type, int posx, int posy);
-void drawpiece(Piece* piece, Board* board);
+void freeboard(Board* board);
 
 #endif

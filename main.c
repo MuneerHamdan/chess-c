@@ -7,17 +7,8 @@ int main(int argc, char** argv){
 
 	Board* board = initboard();
 
-
 	drawboard(board);
 
-
-
-//	drawpiece(piece, board);
-	
-
-
-	free(board);
-//	free(piece);
 
 	return 0;
 }

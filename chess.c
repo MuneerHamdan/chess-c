@@ -22,23 +22,44 @@ Board* initboard() {
 		}
 	}
 
+	Piece* wp0 = initpiece(board, 'w', 'p', 6, 0);
+	Piece* wp1 = initpiece(board, 'w', 'p', 6, 1);
+	Piece* wp2 = initpiece(board, 'w', 'p', 6, 2);
+	Piece* wp3 = initpiece(board, 'w', 'p', 6, 3);
+	Piece* wp4 = initpiece(board, 'w', 'p', 6, 4);
+	Piece* wp5 = initpiece(board, 'w', 'p', 6, 5);
+	Piece* wp6 = initpiece(board, 'w', 'p', 6, 6);
+	Piece* wp7 = initpiece(board, 'w', 'p', 6, 7);
+
+
+	Piece* bp0 = initpiece(board, 'b', 'p', 1, 0);
+	Piece* bp1 = initpiece(board, 'b', 'p', 1, 1);
+	Piece* bp2 = initpiece(board, 'b', 'p', 1, 2);
+	Piece* bp3 = initpiece(board, 'b', 'p', 1, 3);
+	Piece* bp4 = initpiece(board, 'b', 'p', 1, 4);
+	Piece* bp5 = initpiece(board, 'b', 'p', 1, 5);
+	Piece* bp6 = initpiece(board, 'b', 'p', 1, 6);
+	Piece* bp7 = initpiece(board, 'b', 'p', 1, 7);
+	
+
 	return board;
+}
+
+Piece* initpiece(Board* board, char type, char color, int posx, int posy) {
+	Piece* piece = malloc(sizeof(Piece));
+
+	piece->type = type;
+	piece->color = color;
+	piece->pos[0] = posx;
+	piece->pos[1] = posy;
+
+	board->tiles[posx][posy].piece = piece;
+
+	return piece;
 }
 
 
 void drawboard(Board* board) {
-
-	Piece* wp0 = initpiece('w', 'p', 6, 0);
-	Piece* wp1 = initpiece('w', 'p', 6, 1);
-	Piece* wp2 = initpiece('w', 'p', 6, 2);
-	Piece* wp3 = initpiece('w', 'p', 6, 3);
-	Piece* wp4 = initpiece('w', 'p', 6, 4);
-	Piece* wp5 = initpiece('w', 'p', 6, 5);
-	Piece* wp6 = initpiece('w', 'p', 6, 6);
-	Piece* wp7 = initpiece('w', 'p', 6, 7);
-
-
-
 
 	int ch;
 
@@ -49,23 +70,20 @@ void drawboard(Board* board) {
 
 	printw("welcome to chess! press ESC to quit, any other to continue...");
 
-	while ((ch = getch()) != 27){
-		clear();
+	while ((ch = getch()) != 27) {
 
-		drawpiece(wp0, board);
-		drawpiece(wp1, board);
-		drawpiece(wp2, board);
-		drawpiece(wp3, board);
-		drawpiece(wp4, board);
-		drawpiece(wp5, board);
-		drawpiece(wp6, board);
-		drawpiece(wp7, board);
+		clear();
 
 		for (int i = 0; i < RANKS; i++) {
 			for (int j = 0; j < FILES; j++) {
 
-				printw("%c", board->tiles[i][j].empty);
-		//		printw("%c", board->tiles[i][j].piece->type);
+				if (board->tiles[i][j].piece != NULL) {
+					printw("%c%c ", board->tiles[i][j].piece->type, board->tiles[i][j].piece->color);
+				}
+				else {
+					printw(" %c ", board->tiles[i][j].empty);
+				}
+
 			}
 		printw("\n");
 
@@ -78,30 +96,18 @@ void drawboard(Board* board) {
 
 	refresh();
 	endwin();
-	free(wp0);
-	free(wp1);
-	free(wp2);
-	free(wp3);
-	free(wp4);
-	free(wp5);
-	free(wp6);
-	free(wp7);
+
+	freeboard(board);
 }
 
 
-Piece* initpiece(char type, char color, int posx, int posy) {
-	Piece* piece = malloc(sizeof(Piece));
-	piece->type = type;
-	piece->color = color;
-	piece->pos[0] = posx;
-	piece->pos[1] = posy;
+void freeboard(Board* board) {
+	for (int i = 0; i < RANKS; ++i) {
+		for (int j = 0; j < FILES; ++j) {
+			if (board->tiles[i][j].piece != NULL)
+				free(board->tiles[i][j].piece);
+		}
+	}
 
-	return piece;
-}
-
-void drawpiece(Piece* piece, Board* board) {
-	int x = piece->pos[0];
-	int y = piece->pos[1];
-	char type = piece->type;
-	board->tiles[x][y].empty = type;
+	free(board);
 }

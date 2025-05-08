@@ -140,30 +140,18 @@ void drawboard(Board* board) {
 				x = x + 3;
 				break;
 			case 10:
-				if ((selected[0] == -1 || selected[1] == -1) && (board->tiles[y][x / 3].piece != NULL)) {
-					selected[0] = y;
-					selected[1] = x / 3;
-					highlightpiece(board, selected[0], selected[1]);
-				}
-				else {
-					targeted[0] = x / 3;
-					targeted[1] = y;
-					movepiece(board, selected[0], selected[1], targeted[0], targeted[1]);
-					selected[0] = -1;
-					selected[1] = -1;
-
-				}
+				highlightpiece(board, y, x / 3);
 				break;
 			default:
 				break;
 		}
 
-		printw("character pressed = %3d. prints as '%c'\n", ch, ch);
-		printw("boardy: %d, x: %d\n", y, x);
-//		printw("blinking: %d\n",board->tiles[y][x / 3].piece->select);
-		printw("selectedy: %d, x: %d\n", selected[0], selected[1]);
-		printw("targety: %d, x: %d\n", targeted[0], targeted[1]);
-		printw("piece ptr: %p\n", board->tiles[y][x / 3].piece);
+	//	printw("character pressed = %3d. prints as '%c'\n", ch, ch);
+	//	printw("boardy: %d, x: %d\n", y, x);
+//	//	printw("blinking: %d\n",board->tiles[y][x / 3].piece->select);
+	//	printw("selectedy: %d, x: %d\n", selected[0], selected[1]);
+	//	printw("targety: %d, x: %d\n", targeted[0], targeted[1]);
+	//	printw("piece ptr: %p\n", board->tiles[y][x / 3].piece);
 		move(y, x);
 
 
@@ -178,23 +166,23 @@ void drawboard(Board* board) {
 }
 
 
-void highlightpiece(Board* board, int selectedy, int selectedx){
-	if (board->tiles[selectedy][selectedx].piece != NULL)
-		board->tiles[selectedy][selectedx].piece->select = 1;
+void highlightpiece(Board* board, int selectedy, int selectedx) {
+	if ((selectedy < RANKS && selectedy < FILES) && (selectedy >= 0) && ((selectedx < RANKS && selectedx < FILES) && (selectedx >= 0))) {
+		if (board->tiles[selectedy][selectedx].piece != NULL) {
+			Piece* ptr = board->tiles[selectedy][selectedx].piece;
+			if (ptr->select -1) {
+				ptr->select = 1;
+				
+			}
+			else if (ptr->select == 1) {
+				ptr->select = -1;
+			}
+		}
+	}
 }
 
 void movepiece(Board* board, int selectedy, int selectedx, int targety, int targetx) {
-	if (board->tiles[targety][targetx].piece == NULL){
-//		board->tiles[selectedy][selectedx].piece->posy = board->tiles[targety][targetx].piece->posy;
-//		board->tiles[selectedy][selectedx].piece->posx = board->tiles[targety][targetx].piece->posx;
 
-
-		Piece* temp = board->tiles[selectedy][selectedx].piece;
-		board->tiles[selectedy][selectedx].piece = NULL;
-		board->tiles[targetx][targety].piece = temp;
-		printw("targety: %d, x: %d, temp: %p\n", targety, targetx, temp);
-	}
-//	board->tiles[selectedx][selectedy].piece->select = -1;
 }
 
 

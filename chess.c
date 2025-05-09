@@ -19,6 +19,7 @@ Board* initboard() {
 		}
 	}
 
+	// can be combined into arrays of pieces prob
 	Piece* wp0 = initpiece(board, 'w', 'P', 6, 0);
 	Piece* wp1 = initpiece(board, 'w', 'P', 6, 1);
 	Piece* wp2 = initpiece(board, 'w', 'P', 6, 2);
@@ -103,6 +104,7 @@ void drawboard(Board* board) {
 		Piece* piece = NULL;
 		Piece* piece2 = NULL;
 	int sy, sx, ty, tx;
+	sy = sx = ty = tx = -1;
 
 	while ((ch = getch()) != 27) {
 
@@ -153,6 +155,7 @@ void drawboard(Board* board) {
 					if (board->tiles[y][x / 3].piece != NULL) {
 						piece2 = board->tiles[y][x / 3].piece;
 						if (piece != piece2) {
+	//	printw("here\n");
 							sy = piece->posy;
 							sx = piece->posx;
 							ty = piece2->posy;
@@ -169,8 +172,10 @@ void drawboard(Board* board) {
 						}
 					}
 					else if (board->tiles[y][x / 3].piece == NULL) {
+		printw("here\n");
 						sy = piece->posy;
 						sx = piece->posx;
+		printw("spos: (%d, %d)\n", sy, sx);
 						ty = y;
 						tx = x / 3;
 						highlightpiece(board, piece);
@@ -200,8 +205,8 @@ void drawboard(Board* board) {
 		//	printw("selectedy: %d, x: %d\n", selected[0], selected[1]);
 		//	printw("targety: %d, x: %d\n", targeted[0], targeted[1]);
 		//	printw("piece piece: %p\n", board->tiles[y][x / 3].piece);
-//		printw("piece: %p\n", piece);
-//		printw("piece2: %p\n", piece2);
+		printw("piece: %p\n", piece);
+		printw("piece2: %p\n", piece2);
 //		printw("piece: %p (%d, %d)\n", piece, piece->posy, piece->posx);
 //		printw("piece2: %p (%d, %d)\n", piece2, piece2->posy, piece2->posx);
 		move(y, x);

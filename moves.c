@@ -17,9 +17,10 @@ void movepiece(Board* board, int sy, int sx, int ty, int tx) {
 	if (piece2 != NULL) {
 	}
 	else if (piece2 == NULL) {
-		printw("piece: %p (%d, %d)\n", piece1, piece1->posy, piece1->posx);
-//		printw("piece2: %p (%d, %d)\n", piece2, piece2->posy, piece2->posx);
+		//printw("here\n");
 		board->tiles[ty][tx].piece = piece1;
 		board->tiles[sy][sx].piece = NULL;
+		piece1->posy = ty;
+		piece1->posx = tx;
 	}
 }

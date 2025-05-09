@@ -35,7 +35,7 @@ void drawboard(Board* board);
 
 Piece* initpiece(Board* board, char color, char type, int posx, int posy);
 
-//Piece* highlightpiece(Board* board, int selectedy, int selectedx);
+//void highlightpiece(Board* board, int selectedy, int selectedx);
 void highlightpiece(Board* board, Piece* piece);
 //void movepiece(Board* board, int selectedy, int selectedx);
 void movepiece(Board* board, int selectedy, int selectedx, int targety, int targetx);

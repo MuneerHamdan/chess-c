@@ -87,10 +87,6 @@ void drawboard(Board* board) {
 
 	int ch, x, y;
 	ch = x = y = 0;
-	int selected[2];
-	selected[0] = selected[1] = -1;
-	int targeted[2];
-	targeted[0] = targeted[1] = -1;
 
 	initscr();
 	raw();
@@ -223,7 +219,6 @@ void drawboard(Board* board) {
 }
 
 
-//Piece* highlightpiece(Board* board, int selectedy, int selectedx) {
 void highlightpiece(Board* board, Piece* piece) {
 	if (piece != NULL) {
 		if (piece->select == -1) {

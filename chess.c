@@ -1,4 +1,5 @@
 #include "chess.h"
+#include "moves.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
@@ -98,6 +99,11 @@ void drawboard(Board* board) {
 
 	printw("welcome to chess! press ESC to quit, any other to continue...");
 
+
+		Piece* piece = NULL;
+		Piece* piece2 = NULL;
+	int sy, sx, ty, tx;
+
 	while ((ch = getch()) != 27) {
 
 		clear();
@@ -125,7 +131,6 @@ void drawboard(Board* board) {
 		}
 
 
-
 		switch (ch) {
 			case 106:
 				y++;
@@ -140,18 +145,65 @@ void drawboard(Board* board) {
 				x = x + 3;
 				break;
 			case 10:
-				highlightpiece(board, y, x / 3);
+				if (piece == NULL) {
+					piece = board->tiles[y][x / 3].piece;
+					highlightpiece(board, piece);
+				}
+				else if ((piece2 == NULL)) {
+					if (board->tiles[y][x / 3].piece != NULL) {
+						piece2 = board->tiles[y][x / 3].piece;
+						if (piece != piece2) {
+							sy = piece->posy;
+							sx = piece->posx;
+							ty = piece2->posy;
+							tx = piece2->posx;
+							movepiece(board, sy, sx, ty, tx);
+							highlightpiece(board, piece);
+							piece = NULL;
+							piece2 = NULL;
+						}
+						else if (piece == piece2) {
+							highlightpiece(board, piece);
+							piece = NULL;
+							piece2 = NULL;
+						}
+					}
+					else if (board->tiles[y][x / 3].piece == NULL) {
+						sy = piece->posy;
+						sx = piece->posx;
+						ty = y;
+						tx = x / 3;
+						highlightpiece(board, piece);
+						movepiece(board, sy, sx, ty, tx);
+						piece = NULL;
+						piece2 = NULL;
+						sy = sx = ty = tx = -1;
+					}
+				}
 				break;
 			default:
 				break;
 		}
 
-	//	printw("character pressed = %3d. prints as '%c'\n", ch, ch);
-	//	printw("boardy: %d, x: %d\n", y, x);
-//	//	printw("blinking: %d\n",board->tiles[y][x / 3].piece->select);
-	//	printw("selectedy: %d, x: %d\n", selected[0], selected[1]);
-	//	printw("targety: %d, x: %d\n", targeted[0], targeted[1]);
-	//	printw("piece ptr: %p\n", board->tiles[y][x / 3].piece);
+		if (y > (RANKS - 1))
+			y = (RANKS - 1);
+		if (y < 0)
+			y = 0;
+		if (x / 3 > (FILES - 1))
+			x = (FILES - 1) * 3;
+		if (x / 3 < 0)
+			x = 0;
+
+		//	printw("character pressed = %3d. prints as '%c'\n", ch, ch);
+		//	printw("boardy: %d, x: %d\n", y, x);
+		//	//	printw("blinking: %d\n",board->tiles[y][x / 3].piece->select);
+		//	printw("selectedy: %d, x: %d\n", selected[0], selected[1]);
+		//	printw("targety: %d, x: %d\n", targeted[0], targeted[1]);
+		//	printw("piece piece: %p\n", board->tiles[y][x / 3].piece);
+//		printw("piece: %p\n", piece);
+//		printw("piece2: %p\n", piece2);
+//		printw("piece: %p (%d, %d)\n", piece, piece->posy, piece->posx);
+//		printw("piece2: %p (%d, %d)\n", piece2, piece2->posy, piece2->posx);
 		move(y, x);
 
 
@@ -166,23 +218,16 @@ void drawboard(Board* board) {
 }
 
 
-void highlightpiece(Board* board, int selectedy, int selectedx) {
-	if ((selectedy < RANKS && selectedy < FILES) && (selectedy >= 0) && ((selectedx < RANKS && selectedx < FILES) && (selectedx >= 0))) {
-		if (board->tiles[selectedy][selectedx].piece != NULL) {
-			Piece* ptr = board->tiles[selectedy][selectedx].piece;
-			if (ptr->select -1) {
-				ptr->select = 1;
-				
-			}
-			else if (ptr->select == 1) {
-				ptr->select = -1;
-			}
+//Piece* highlightpiece(Board* board, int selectedy, int selectedx) {
+void highlightpiece(Board* board, Piece* piece) {
+	if (piece != NULL) {
+		if (piece->select == -1) {
+			piece->select = 1;
+		}
+		else if (piece->select == 1) {
+			piece->select = -1;
 		}
 	}
-}
-
-void movepiece(Board* board, int selectedy, int selectedx, int targety, int targetx) {
-
 }
 
 

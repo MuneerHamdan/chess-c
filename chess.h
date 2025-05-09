@@ -1,5 +1,5 @@
-#ifndef TEST_H
-#define TEST_H
+#ifndef CHESS_H
+#define CHESS_H
 
 
 #define RANKS 8
@@ -35,8 +35,11 @@ void drawboard(Board* board);
 
 Piece* initpiece(Board* board, char color, char type, int posx, int posy);
 
-void highlightpiece(Board* board, int selectedy, int selectedx);
+//Piece* highlightpiece(Board* board, int selectedy, int selectedx);
+void highlightpiece(Board* board, Piece* piece);
+//void movepiece(Board* board, int selectedy, int selectedx);
 void movepiece(Board* board, int selectedy, int selectedx, int targety, int targetx);
+//void movepiece(Board* board, Piece* piece1, Piece* piece2);
 
 void freeboard(Board* board);
 

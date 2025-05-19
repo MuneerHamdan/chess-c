@@ -147,7 +147,7 @@ void drawboard(Board* board) {
 					piece = board->tiles[y][x / 3].piece;
 					highlightpiece(board, piece);
 				}
-				else if ((piece2 == NULL)) {
+				else if (piece2 == NULL) {
 					if (board->tiles[y][x / 3].piece != NULL) {
 						piece2 = board->tiles[y][x / 3].piece;
 						if (piece != piece2) {

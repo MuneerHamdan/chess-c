@@ -12,6 +12,7 @@ Board* initboard() {
 			board->tiles[i][j].posy = i;
 			board->tiles[i][j].posx = j;
 			board->tiles[i][j].piece = NULL;
+			board->tiles[i][j].select == -1;
 			if ((i + j) % 2 == 0)
 				board->tiles[i][j].empty = BLACK;
 			else
@@ -68,7 +69,7 @@ Board* initboard() {
 	return board;
 }
 
-Piece* initpiece(Board* board, char type, char color, int posy, int posx) {
+Piece* initpiece(Board* board, char color, char type, int posy, int posx) {
 	Piece* piece = malloc(sizeof(Piece));
 
 	piece->select = -1;
@@ -92,9 +93,18 @@ void drawboard(Board* board) {
 	raw();
 	keypad(stdscr, TRUE);
 	noecho();
-	//	getmaxyx(stdscr, y, x);
+							attron(A_BOLD);
+	if (has_colors() == FALSE) {
+		endwin();
+		printf("no color support\n");
+		exit(1);
+	}
+	start_color();
+	init_pair(BACKGROUND_PAIR1, COLOR_WHITE, COLOR_BLACK);
+	init_pair(BACKGROUND_PAIR2, COLOR_BLACK, COLOR_WHITE);
+	init_pair(HIGHLIGHT_PAIR, COLOR_BLACK, COLOR_GREEN);
 
-	printw("welcome to chess! press ESC to quit, any other to continue...");
+//	printw("welcome to chess! press ESC to quit, any other to continue...");
 
 
 		Piece* piece = NULL;
@@ -111,16 +121,55 @@ void drawboard(Board* board) {
 
 				if (board->tiles[i][j].piece != NULL) {
 					if (board->tiles[i][j].piece->select == 1) {
-						addch(board->tiles[i][j].piece->type | A_BLINK);
+						attron(COLOR_PAIR(HIGHLIGHT_PAIR));
 						addch(board->tiles[i][j].piece->color | A_BLINK);
-						printw(" ");
+						addch(board->tiles[i][j].piece->type | A_BLINK);
+						attroff(COLOR_PAIR(HIGHLIGHT_PAIR));
+//						printw(" ");
 					}
 					else
-						printw("%c%c ", board->tiles[i][j].piece->type, board->tiles[i][j].piece->color);
-//						printw("(%d, %d) ", board->tiles[i][j].piece->posy, board->tiles[i][j].piece->posx);
+						if ((i + j) % 2 == 0) {
+							attron(COLOR_PAIR(BACKGROUND_PAIR1));
+							addch(board->tiles[i][j].piece->color);
+							addch(board->tiles[i][j].piece->type);
+							attroff(COLOR_PAIR(BACKGROUND_PAIR1));
+						}
+						else {
+							attron(COLOR_PAIR(BACKGROUND_PAIR2));
+							addch(board->tiles[i][j].piece->color);
+							addch(board->tiles[i][j].piece->type);
+							attroff(COLOR_PAIR(BACKGROUND_PAIR2));
+						}
+//							printw(" ");
+						//printw("%c%c ", board->tiles[i][j].piece->color, board->tiles[i][j].piece->type);
 				}
 				else {
-					printw("%c%c ", board->tiles[i][j].empty, board->tiles[i][j].empty);
+//					printw("%c%c ", board->tiles[i][j].empty, board->tiles[i][j].empty);
+					if (board->tiles[i][j].select == 1) {
+						attron(COLOR_PAIR(BACKGROUND_PAIR1));
+						addch(board->tiles[i][j].empty | A_BLINK);
+						addch(board->tiles[i][j].empty | A_BLINK);
+						attroff(COLOR_PAIR(BACKGROUND_PAIR1));
+//						printw(" ");
+					}
+					else {
+						if ((i + j) % 2 == 0) {
+							attron(COLOR_PAIR(BACKGROUND_PAIR1));
+							addch(board->tiles[i][j].empty);
+							addch(board->tiles[i][j].empty);
+							attroff(COLOR_PAIR(BACKGROUND_PAIR1));
+//						printw("%c%c ", board->tiles[i][j].empty, board->tiles[i][j].empty);
+						}
+						else {
+							attron(COLOR_PAIR(BACKGROUND_PAIR2));
+							addch(board->tiles[i][j].empty);
+							addch(board->tiles[i][j].empty);
+							attroff(COLOR_PAIR(BACKGROUND_PAIR2));
+						}
+//						printw(" ");
+
+					}
+
 				}
 
 			}
@@ -144,8 +193,13 @@ void drawboard(Board* board) {
 				break;
 			case 10:
 				if (piece == NULL) {
-					piece = board->tiles[y][x / 3].piece;
-					highlightpiece(board, piece);
+					if (board->tiles[y][x / 3].piece != NULL) {
+						piece = board->tiles[y][x / 3].piece;
+						highlightpiece(board, piece);
+						if (piece->type == 'P') {
+							highlightpawn(board, piece);
+						}
+					}
 				}
 				else if (piece2 == NULL) {
 					if (board->tiles[y][x / 3].piece != NULL) {
@@ -168,10 +222,10 @@ void drawboard(Board* board) {
 						}
 					}
 					else if (board->tiles[y][x / 3].piece == NULL) {
-		printw("here\n");
+						printw("here\n");
 						sy = piece->posy;
 						sx = piece->posx;
-		printw("spos: (%d, %d)\n", sy, sx);
+						printw("spos: (%d, %d)\n", sy, sx);
 						ty = y;
 						tx = x / 3;
 						highlightpiece(board, piece);
@@ -180,6 +234,8 @@ void drawboard(Board* board) {
 						piece2 = NULL;
 						sy = sx = ty = tx = -1;
 					}
+
+
 				}
 				break;
 			default:
@@ -203,8 +259,8 @@ void drawboard(Board* board) {
 		//	printw("piece piece: %p\n", board->tiles[y][x / 3].piece);
 		printw("piece: %p\n", piece);
 		printw("piece2: %p\n", piece2);
-//		printw("piece: %p (%d, %d)\n", piece, piece->posy, piece->posx);
-//		printw("piece2: %p (%d, %d)\n", piece2, piece2->posy, piece2->posx);
+		//		printw("piece: %p (%d, %d)\n", piece, piece->posy, piece->posx);
+		//		printw("piece2: %p (%d, %d)\n", piece2, piece2->posy, piece2->posx);
 		move(y, x);
 
 
@@ -212,6 +268,7 @@ void drawboard(Board* board) {
 
 	}
 
+							attroff(A_BOLD);
 	refresh();
 	endwin();
 
@@ -220,13 +277,27 @@ void drawboard(Board* board) {
 
 
 void highlightpiece(Board* board, Piece* piece) {
+	//	board->tiles[3][3].select = 1;
 	if (piece != NULL) {
 		if (piece->select == -1) {
 			piece->select = 1;
+			printw("%c%c\n", piece->color, piece->type);
 		}
 		else if (piece->select == 1) {
 			piece->select = -1;
 		}
+	}
+}
+
+void highlightpawn(Board* board, Piece* piece) {
+	int y, x;
+	y = piece->posy;
+	x = piece->posx;
+	if (piece->color == 'w') {
+		board->tiles[y-1][x].select = 1;
+	}
+	else if (piece->color == 'b') {
+		board->tiles[y+1][x].select = 1;
 	}
 }
 
